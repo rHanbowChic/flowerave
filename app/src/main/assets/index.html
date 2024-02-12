@@ -1,0 +1,143 @@
+<!DOCTYPE html><html><head>
+
+    <style>
+        body {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 100%;
+            z-index: 1000;
+            background: #f6f0bb url(file:///android_asset/img/tiny_bloom_card-4x.png) center no-repeat border-box fixed;
+            background-size: 96px;
+            margin: 0;/* for removing user-agent styles */
+        }
+    </style>
+
+
+
+
+
+
+
+
+    <!--the number of pictures-->
+    <script>  var num=66;  </script>
+
+
+
+
+
+
+
+
+    <title></title>
+    <style>
+    html{cursor:help;}
+    #base, #action {
+        position:absolute;
+        top:0;left:0;
+        width:100%;height:100%;
+    }
+    #base, .title {
+        transition:opacity ease .5s;
+    }
+    #base {
+        z-index:1;
+        background:center no-repeat border-box fixed;
+        background-size:cover;
+        opacity: 0;
+    }
+    .title {
+        z-index:2;
+        position:absolute;
+        font-family: "Times New Roman", Times, serif;
+        font-size:20px;
+        color:white;
+        font-style:italic;
+        mix-blend-mode:difference;
+        opacity: 0;
+
+    }
+    @font-face {
+        font-family: "Times New Roman";
+        src:local("Times New Roman"),
+            url("file:///android_asset/css/fonts/times.ttf") format("truetype");
+    }
+    #action {
+        z-index:3;
+    }
+    #title1::before {
+        content: "the_flower_avenue";
+    }
+    #title2::before {
+        content: "of_your_dream";
+    }
+    </style>
+</head>
+<body>
+<div id="base"></div>
+<div id="title1" class="title"></div>
+<div id="title2" class="title"></div>
+<div id="action" onclick="animPic();"></div>
+<script>
+    var picPrevPrev;var picPrev;var picIndex;
+    var imgURL="";
+    var bs=document.getElementById('base');
+    var t1=document.getElementById('title1');
+    var t2=document.getElementById('title2');
+    var widthV=bs.offsetWidth-272;
+    var heightV=bs.offsetHeight-32;
+    var isPlaying = true;
+
+    function newURL() {
+        picPrevPrev=picPrev;
+        picPrev=picIndex;
+        picIndex=Math.floor(Math.random()*num+1);
+        if (picIndex!=picPrevPrev && picIndex!=picPrev) {
+            imgURL='file:///android_asset/img/pic/'+picIndex+'.jpg';
+        }
+        else {newURL();}
+    }
+    function applyPic() {newURL();
+        bs.style.backgroundImage='url('+imgURL+')';
+        preloadImage(imgURL);
+    }
+    function rdPos() {
+        t1top=Math.random()*heightV;
+        t2top=Math.random()*heightV;
+        t1left=Math.random()*widthV;
+        t2left=Math.random()*widthV;
+        t1.style.left=String(t1left)+'px';
+        t2.style.left=String(t2left)+'px';
+        t1.style.top=String(t1top)+'px';
+        t2.style.top=String(t2top)+'px';
+    }
+    function preloadImage(url) {
+        var tmp_img = new Image();
+        tmp_img.src=url
+    }
+    newURL();applyPic();rdPos();
+    setTimeout(() => {
+        bs.style.opacity='1';t1.style.opacity='1';t2.style.opacity='1';
+        setTimeout(() => {isPlaying = false}, 500)
+    }, 500)
+
+    function animPic() {
+        if (!isPlaying) {
+            isPlaying = true;
+            bs.style.opacity='0';t1.style.opacity='0';t2.style.opacity='0';
+            setTimeout(() => {
+                applyPic();
+                rdPos();
+                setTimeout(() => {
+                    bs.style.opacity='1';t1.style.opacity='1';t2.style.opacity='1';
+                    setTimeout(() => {isPlaying = false;}, 500)
+                },500);
+            },500)
+        }
+
+    }
+    </script>
+</body>
+</html>
